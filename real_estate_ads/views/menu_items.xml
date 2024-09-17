@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+    <record model="ir.actions.client" id="my_client_action">
+        <field name="name">My Client Action</field>
+        <field name="tag">real_estate_ads.</field>
+    </record> -->
+
+    <menuitem name="Property Ads" id="menu_root_property_ads" web_icon="real_estate_ads, static/description/icon.png">
+        <menuitem id="menu_property_ads" name="Ads">
+            <menuitem id="menu_property" name="Property" action="real_estate_ads.action_property"/>
+        </menuitem>
+
+        <menuitem id="menu_property_ads_settings" name="Settings">
+            <menuitem id="menu_property_type" name="Property Types" action="real_estate_ads.action_property_type"/>
+            <menuitem id="menu_property_tag" name="Property Tags" action="real_estate_ads.action_property_tag"/>
+            <menuitem id="menu_property_offer" name="Property Offers" action="real_estate_ads.action_property_offer"/>
+            <menuitem id="menu_client_action" name="Test Client Action" action="real_estate_ads.action_custom_client_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>

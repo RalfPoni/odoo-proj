@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+
+        <template id="report_estate_property_document">
+            <t t-call="web.external_layout">
+                <div class="mt-5">
+                    <div class="page">
+                        <h2>Property Report</h2>
+
+                        <div id="imfo" class="row mt-4 mb-4">
+                            <div class="col-auto col-3">
+                                <strong>Type:</strong>
+                                <p class="m-0" t-field="o.type_id"/>
+                            </div>
+                            <div class="col-auto col-3">
+                                <strong>Post Code:</strong>
+                                <p class="m-0" t-field="o.postcode"/>
+                            </div>
+                            <div class="col-auto col-3">
+                                <strong>Date Availability:</strong>
+                                <p class="m-0" t-field="o.date_availability"/>
+                            </div>
+                        </div>]
+                    </div>
+
+                </div>
+            </t>
+        </template>
+
+        <template id="report_estate_property">
+            <!-- t is a syntax that is used to reference another template -->
+            <!-- There is a web.html_container template in web
+                 you can access and look through the docs and assign them a value
+                 this is essentially as saying for all in docs
+                 another t call refers to a template that needs to be created -->
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="real_estate_ads.report_estate_property_document"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="action_property_view_offer" model="ir.actions.act_window">
+            <field name="name">Offers</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="estate_property_tree_view" model="ir.ui.view">
+            <field name="name">estate.property.tree</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="type_id"/>
+                    <field name="postcode"/>
+                    <field name="date_availability"/>
+                    <field name="expected_price"/>
+                    <field name="best_offer"/>
+                    <field name="selling_price"/>
+                    <field name="state" widget="badge"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="estate_property_form_view" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form>
+                  <!-- Header is needed for adding buttons -->
+                    <header>
+                        <button name="action_sold" type="object" string="Sold" class="btn btn-primary"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                   <sheet>
+                       <div class="button_box" name="button_box">
+                           <button class="oe_stat_button" name="%(real_estate_ads.action_property_view_offer)d" type="action">
+                               <field name="offer_count" string="Offers" widget='statinfo'/>
+                           </button>
+                           <button class="oe_stat_button" name="action_url_action" type="object">
+                               Google
+                           </button>
+                       </div>
+                       <!-- The div below showcases the implementation of a smart button -->
+                       <!-- The button is connected to the offers, oe_button_box is a -->
+                       <!-- <button = oe_button_box/> -->
+
+                       <group>
+                           <field name="name" placeholder="Property Name"/>
+                           <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
+                           <group>
+                              <field name="type_id"/>
+                               <field name="postcode"/>
+                               <field name="date_availability"/>
+                           </group>
+                           <group>
+                               <field name="expected_price"/>
+                               <field name="best_offer" readonly="True"/>
+                               <field name="selling_price" readonly="1"/>
+                           </group>
+                       </group>
+                           <notebook>
+                               <page string="Description">
+                               <group>
+                                       <field name="description"/>
+                                       <field name="bedroom"/>
+                                       <field name="living_area"/>
+                                       <field name="facade"/>
+                                       <field name="garage" widget="boolean_toggle"/>
+                                       <field name="garden"/>
+                                       <field name="garden_area" readonly="garden == False"/>
+                                       <field name="garden_orientation" widget="selection_badge"/>
+                                        <field name="total_area"/>
+                               </group>
+                                   </page>
+                                   <page string="Offers">
+                                       <field name="offer_ids">
+                                           <tree editable="button" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                                               <field name="price"/>
+                                               <field name="partner_id"/>
+                                               <field name="validity"/>
+                                               <field name="create_date" invisible="1"/>
+                                               <field name="deadline"/>
+                                               <field name="status" readonly="1"/>
+                                               <button name="action_accept_offer" type="object" icon="fa-check" string="Accept"/>
+                                               <button name="action_reject_offer" type="object" icon="fa-times" string="Decline"/>
+                                           </tree>
+                                       </field>
+                                   </page>
+                               <page string="Other Info">
+                                   <group>
+                                       <field name="sales_id" widget="many2one_avatar_user"/>
+                                       <field name="buyer_id"/>
+                                       <field name="phone" widget="phone"/>
+                                   </group>
+                               </page>
+                               </notebook>
+                   </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="estate_property_kanban_view" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" quick_create_view="real_estate_ads.estate_property_quick_create">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="postcode"/>
+                    <field name="buyer_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                <field name="name"/>
+                                </strong>
+                                <div name="kanban_tags_section">
+                                    <field name="tag_ids" widget="many2many_tags"/>
+                                </div>
+
+                                <div class="o_kanban_record_button">
+                                    <div class="oe_kanban_button_left">
+                                        <field name="offer_count"/> Offer(s)
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+         <record id="estate_property_pivot_view" model="ir.ui.view">
+            <field name="name">estate.property.pivot</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <pivot>
+                    <field name="name" type="row"/>
+                    <field name="selling_price" type="measure"/>
+                    <field name="expected_price" type="measure"/>
+                    <field name="facade" type="measure"/>
+                    <field name="bedroom" type="measure"/>
+                    <field name="state" type="col"/>
+                </pivot>
+            </field>
+         </record>
+
+        <record id="estate_property_quick_create" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_property" model="ir.actions.act_window">
+            <field name="name">Property</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">kanban,tree,pivot,form</field>
+            <field name="view_id" ref="estate_property_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a property to advertise
+                </p>
+            </field>
+        </record>
+
+        <record id="action_extend_deadline" model="ir.actions.server">
+            <field name="name">Extend Deadline</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property_offer"/>
+            <field name="state">code</field>
+            <field name="binding_model_id" ref="real_estate_ads.model_estate_property_offer"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="code">
+                action = model.extend_offer_deadline()
+            </field>
+        </record>
+
+        <record id="action_custom_client_action" model="ir.actions.client">
+            <field name="name">Custom Client Action</field>
+            <field name="tag">custom_client_action</field>
+        </record>
+
+        <record id="ir_cron_extend_offer_deadline" model="ir.cron">
+            <field name="name">Offers: Extend Deadline Every Day</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property_offer"/>
+            <field name="state">code</field>
+            <field name="code">model._extend_offer_deadline()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">1</field>
+        </record>
+    </data>
+</odoo>
