@@ -24,7 +24,9 @@ class PropertyOffer(models.Model):
                 rec.name = False
 
     name = fields.Char(string="Description", compute='_compute_name')
-    price = fields.Float(String="Price", required=True, default=0)
+    price = fields.Monetary(String="Price", required=True, default=0)
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda self: self.env.user.company_id.currency_id)
     status = fields.Selection(
         [('accepted', 'Accepted'), ('refused', 'Refused')]
     )

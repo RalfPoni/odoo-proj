@@ -8,6 +8,7 @@
     "category": "Marketing",
     "depends": ['real_estate_ads', 'base'],
     "data": [
+        "views/res_users.xml"
     ],
     "installable": True,
     "license": "LGPL-3"

@@ -59,9 +59,10 @@
                                <field name="date_availability"/>
                            </group>
                            <group>
-                               <field name="expected_price"/>
-                               <field name="best_offer" readonly="True"/>
-                               <field name="selling_price" readonly="1"/>
+                               <field name="expected_price" widget="monetary"/>
+                               <field name="best_offer" readonly="True" widget="monetary"/>
+                               <field name="selling_price" readonly="1" widget="monetary"/>
+                               <field name="currency_id" invisible="1"/>
                            </group>
                        </group>
                            <notebook>
@@ -81,7 +82,8 @@
                                    <page string="Offers">
                                        <field name="offer_ids">
                                            <tree editable="button" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
-                                               <field name="price"/>
+                                               <field name="price" widget="monetary"/>
+                                               <field name="currency_id" invisible="1"/>
                                                <field name="partner_id"/>
                                                <field name="validity"/>
                                                <field name="create_date" invisible="1"/>

@@ -15,8 +15,8 @@ class Property(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available from")
-    expected_price = fields.Float(string="Expected price")
-    selling_price = fields.Float(string="Selling price")
+    expected_price = fields.Monetary(string="Expected price")
+    selling_price = fields.Monetary(string="Selling price")
     bedroom = fields.Integer(string="Bedrooms")
     living_area = fields.Integer(string="Living Areas")
     facade = fields.Integer(string="Facades")
@@ -35,6 +35,8 @@ class Property(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer', domain=[('is_company', '=', True)])
     total_area = fields.Integer(string='Total Area', compute='_compute_total_area')
     phone = fields.Char(string="Phone", related="buyer_id.phone")
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda self: self.env.user.company_id.currency_id)
 
 
     @api.depends('living_area', 'garden_area')
@@ -66,7 +68,7 @@ class Property(models.Model):
                 rec.best_offer = 0
 
     offer_count = fields.Integer(string="Offer Count", compute='_compute_offer_count')
-    best_offer = fields.Float(string="Best Offer", compute='_compute_best_offer')
+    best_offer = fields.Monetary(string="Best Offer", compute='_compute_best_offer')
 
     def action_property_view_offers(self):
         return {
